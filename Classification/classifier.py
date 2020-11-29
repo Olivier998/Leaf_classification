@@ -2,9 +2,12 @@
 Main classification class, calls the wanted classification method
 """
 
-from sklearn.linear_model import RidgeClassifier
+from sklearn import linear_model
 from sklearn.metrics import accuracy_score
 from Data.DataTransformations import polynomial_projection
+from sklearn import svm
+from sklearn import ensemble
+from sklearn.neural_network import MLPClassifier
 
 
 class Classifier:
@@ -21,7 +24,21 @@ class Classifier:
         self.predicted_labels = None  # predicted labels in self.predict
         self.M = m
         if method_name == "Ridge":
-            self.classifier = RidgeClassifier(alpha=lambd)
+            self.classifier = linear_model.RidgeClassifier(alpha=lambd)
+        elif method_name == "Logistic Regression":
+            self.classifier = linear_model.LogisticRegression(C=lambd)
+        elif method_name == "SGD":
+            self.classifier = linear_model.SGDClassifier(alpha=lambd)
+        elif method_name == "Perceptron":
+            self.classifier = linear_model.Perceptron(alpha=lambd)
+        elif method_name == "SVM":
+            self.classifier = svm.SVC(C=lambd)
+        elif method_name == "Random forest":
+            self.classifier = ensemble.RandomForestClassifier(min_samples_split=lambd)
+        elif method_name == "ML Perceptron":
+            self.classifier = MLPClassifier(alpha=lambd, learning_rate='adaptive', max_iter=2000)
+        else:
+            raise Exception("Invalid method : {}".format(method_name))
 
     def train(self, data_train, labels):
         """ Trains algorithm on training data
