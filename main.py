@@ -27,10 +27,10 @@ def main():
     data_valid = valid_dataset.drop("species", "columns")
 
     # set classification method
-    classifier = Classification.classifier.Classifier("LinearRegression")
+    classifier = Classification.classifier.Classifier("Ridge", m=0, lambd=0.1)
     classifier.train(data_train, label_train)
     predicted = classifier.predict(data_valid)
-    print(predicted)
+    print(classifier.score(label_valid))
     #print(classifier.score(label_valid))
 
 if __name__ == "__main__":
