@@ -25,16 +25,16 @@ class Classifier:
         self.M = m
         if method_name == "Ridge":
             self.classifier = linear_model.RidgeClassifier(alpha=lambd)
-        elif method_name == "Logistic Regression":
-            self.classifier = linear_model.LogisticRegression(C=lambd)
+        elif method_name == "Logistic Regression":  # C : Inverse of regularization strength
+            self.classifier = linear_model.LogisticRegression(C=lambd**-1, max_iter=1000)
         elif method_name == "SGD":
             self.classifier = linear_model.SGDClassifier(alpha=lambd)
         elif method_name == "Perceptron":
             self.classifier = linear_model.Perceptron(alpha=lambd)
-        elif method_name == "SVM":
-            self.classifier = svm.SVC(C=lambd)
+        elif method_name == "SVM":  # C : Inverse of regularization strength
+            self.classifier = svm.SVC(C=lambd**-1)
         elif method_name == "Random forest":
-            self.classifier = ensemble.RandomForestClassifier(min_samples_split=lambd)
+            self.classifier = ensemble.RandomForestClassifier(min_samples_split=float(lambd))  # converts to float
         elif method_name == "ML Perceptron":
             self.classifier = MLPClassifier(alpha=lambd, learning_rate='adaptive', max_iter=2000)
         else:
