@@ -17,11 +17,21 @@ class Database:
         self.validation_data = None
         self.train_data = None
 
+    def get_unique_values(self, column="species"):
+        """ returns all unique labels in an array, which we can use to encode labels """
+        return self.complete_train_data[column].unique()
+
     def get_test_data(self):
         """
         :return: testing dataset
         """
         return self.test_data
+
+    def get_train_data(self):
+        """ Returns complete train data set, without validation
+        :return: training data set
+        """
+        return self.complete_train_data
 
     def get_train_validation_data(self):
         """ Returns train and validation data sets
