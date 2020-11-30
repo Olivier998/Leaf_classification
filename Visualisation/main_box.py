@@ -2,30 +2,28 @@
 Class to show the main interface to plot results
 """
 import tkinter as tk
-
+import Classification.methodsTester
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 
 OptionList = ["Choose a method", "Ridge"]
 
 
-
-
 class Interface:
     """"""
 
-    def __init__(self, master):
+    def __init__(self, master, data_holder):
         self.root = master
         # frames
-        self.left_frame = Frame(self.root, side="left", color="white")
-        self.right_frame = Frame(self.root, side="right", color="blue")#tk.Frame(self.root)
-
+        self.left_frame = Frame(self.root, data_holder=data_holder, side="left", color="white")
+        self.right_frame = Frame(self.root, data_holder=data_holder, side="right", color="white")
 
 
 class Frame:
 
-    def __init__(self, master, side, color="red"):
+    def __init__(self, master, data_holder, side, color="red"):
         self.master = master
+        self.data_holder = data_holder
         # Set Frame
         self.frame = tk.Frame(master, bg=color)
         self.frame.pack(side=side, fill="both", expand=True)
@@ -52,7 +50,6 @@ class Frame:
         # placing the toolbar on the Tkinter window
         self.canvas.get_tk_widget().pack()
 
-
         # Set the refresh graph button
         self.b1 = tk.Button(self.frame, text="Refresh", command=self.refresh_plot, pady=8, padx=30)
         self.b1.pack()
@@ -68,18 +65,21 @@ class Frame:
             y = []
         else:
             self.plot1.set_title("Method : " + self.method_choice.get())  # Reset title
-            y = [(i / 100) ** 2-5 for i in range(95)]  # Get data
+            # Get iterative Data
+            data_frame = Classification.methodsTester.find_parameters_list(self.method_choice.get(),
+                                                                           self.data_holder)
+            groups = data_frame.groupby('M')
+            for name, group in groups:
+                self.plot1.plot(group.lambd, group.score, marker='o', label=name)
+            self.plot1.legend()
 
-        # plot new data
-        self.plot1.plot(y)
+        # refresh canvas with new plot
         self.canvas.draw()
 
 
-
-
-
-if __name__ == "__main__":
+def show_interface(data_holder):
+    """ Creates the interface """
     root = tk.Tk()
     root.minsize(840, 400)
-    al = Interface(root)
+    Interface(root, data_holder)
     root.mainloop()
