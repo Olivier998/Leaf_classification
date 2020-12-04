@@ -2,15 +2,16 @@
 Class to show the main interface to plot results
 """
 import tkinter as tk
+import numpy as np
 import Classification.methodsTester
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 
-OptionList = ["Choose a method", "Ridge"]
+OptionList = ["Choose a method", "Ridge", "Logistic Regression", "SGD", "Perceptron", "SVM", "Random forest", "ML Perceptron"]
 
 
 class Interface:
-    """"""
+    """ Creates an interface to compare performance of different classification methods on leafs data """
 
     def __init__(self, master, data_holder):
         self.root = master
@@ -36,7 +37,7 @@ class Frame:
         opt.pack()
 
         # Initialise graph
-        self.fig = Figure(figsize=(3, 3))
+        self.fig = Figure(figsize=(5, 4))
         # adding the subplot
         self.plot1 = self.fig.add_subplot(111)
         self.plot1.plot()
@@ -64,14 +65,18 @@ class Frame:
         if self.method_choice.get() == "Choose a method":
             y = []
         else:
-            self.plot1.set_title("Method : " + self.method_choice.get())  # Reset title
+            self.plot1.set_title("Method : " + self.method_choice.get())  # Reset titles
+            self.plot1.set_ylabel("Accuracy")
+            self.plot1.set_xlabel("n value (10^n) for regularization term")
+
             # Get iterative Data
             data_frame = Classification.methodsTester.find_parameters_list(self.method_choice.get(),
                                                                            self.data_holder)
+            data_frame["lambd"] = np.log10(data_frame["lambd"])  # we want the exponent
             groups = data_frame.groupby('M')
             for name, group in groups:
                 self.plot1.plot(group.lambd, group.score, marker='o', label=name)
-            self.plot1.legend()
+            self.plot1.legend(title="M values (for projection)")
 
         # refresh canvas with new plot
         self.canvas.draw()
@@ -80,6 +85,7 @@ class Frame:
 def show_interface(data_holder):
     """ Creates the interface """
     root = tk.Tk()
-    root.minsize(840, 400)
+    root.title("Methods comparator")
+    root.minsize(1000, 500)
     Interface(root, data_holder)
     root.mainloop()

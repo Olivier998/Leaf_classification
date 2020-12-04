@@ -10,8 +10,8 @@ def find_parameters_list(method_name, data_holder):
     data_train, label_train = data_holder.get_training_data()
     data_valid, label_valid = data_holder.get_validation_data()
 
-    for m in range(3):  # m=3 takes too much time
-        for lambd_i in [2**-n for n in range(0, 11)]:
+    for m in range(2):  # m=3 takes too much time
+        for lambd_i in [10**-n for n in range(0, 6)]:
             # Define classifier
             classifier = Classification.classifier.Classifier(method_name, m=m, lambd=lambd_i)
             # Train method on data
