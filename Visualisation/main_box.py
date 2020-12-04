@@ -6,8 +6,7 @@ import numpy as np
 import Classification.methodsTester
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
-
-OptionList = ["Choose a method", "Ridge", "Logistic Regression", "SGD", "Perceptron", "SVM", "Random forest", "ML Perceptron"]
+from Data.globalParameters import methods_list
 
 
 class Interface:
@@ -30,10 +29,9 @@ class Frame:
         self.frame.pack(side=side, fill="both", expand=True)
 
         # Set dropdown
-        global OptionList
         self.method_choice = tk.StringVar(self.frame)
-        self.method_choice.set(OptionList[0])
-        opt = tk.OptionMenu(self.frame, self.method_choice, *OptionList)
+        self.method_choice.set(methods_list[0])
+        opt = tk.OptionMenu(self.frame, self.method_choice, *methods_list)
         opt.pack()
 
         # Initialise graph

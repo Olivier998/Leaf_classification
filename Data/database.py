@@ -3,6 +3,7 @@ Class to get raw data from csv files and split train data into training and vali
 """
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from Data.globalParameters import test_data_location, train_data_location
 
 
 class Database:
@@ -12,8 +13,8 @@ class Database:
         """ Constructor
         :param folder: Name of folder containing Data_files/test.csv and Data_files/train.csv
         """
-        self.test_data = pd.read_csv(folder + "Data_files/test.csv")
-        self.complete_train_data = pd.read_csv(folder + "Data_files/train.csv")
+        self.test_data = pd.read_csv(folder + test_data_location)
+        self.complete_train_data = pd.read_csv(folder + train_data_location)
         self.validation_data = None
         self.train_data = None
 

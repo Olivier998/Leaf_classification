@@ -3,6 +3,7 @@ Tests multiple hyper-parameters for chosen method
 """
 import Classification.classifier
 import pandas as pd
+from Data.globalParameters import M_list, lambda_list
 
 
 def find_parameters_list(method_name, data_holder):
@@ -10,8 +11,8 @@ def find_parameters_list(method_name, data_holder):
     data_train, label_train = data_holder.get_training_data()
     data_valid, label_valid = data_holder.get_validation_data()
 
-    for m in range(2):  # m=3 takes too much time
-        for lambd_i in [10**-n for n in range(0, 6)]:
+    for m in M_list:  # m=3 takes too much time
+        for lambd_i in lambda_list:
             # Define classifier
             classifier = Classification.classifier.Classifier(method_name, m=m, lambd=lambd_i)
             # Train method on data
