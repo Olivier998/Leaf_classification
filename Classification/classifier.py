@@ -27,7 +27,7 @@ class Classifier:
             self.classifier = linear_model.RidgeClassifier(alpha=lambd)
         elif method_name == "Logistic Regression":  # C : Inverse of regularization strength
             self.classifier = linear_model.LogisticRegression(C=lambd**-1, max_iter=1000)
-        elif method_name == "11":
+        elif method_name == "SGC":
             self.classifier = linear_model.SGDClassifier(alpha=lambd)
         elif method_name == "Perceptron":
             self.classifier = linear_model.Perceptron(alpha=lambd)
